@@ -1,0 +1,85 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textit{Crowd Synchrony}}
+\chead{\textit{Blake Urban}}
+\rhead{\textit{xx/xx/2022}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\cfoot{\thepage}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\begin{enumerate}
+    \item\section*{Initial Info and Thoughts Dump}
+    \subsection{Simple Thoughts and First Read}
+    The bridge swaying from side to side caused many people to fall into step with the vibrations and amplify them. The bridge had no inherent design to cause this, (although the unique design of the bridge had been blamed initially) it was caused by the large number of people on the bridge at once. To prevent this from happening again, engineers need to know how to dampen the vibrations so that they don't amplify.\hfill
+    
+    They modeled the bridge as an oscillator that had a dampening factor to describe the slowing down they wanted, and a driven factor that described the people walking on the bridge causing it to swing.\hfill
+    
+    Despite everyone on the bridge having an initially random gait, due to the natural frequency (Like a guitar string being plucked), once there were enough people on the bridge it would suddenly start to wobble side to side.\hfill
+    
+    Due to this wobble suddenly being present, the gait of people slightly shifted to match that of the bridge. This then kept repeating as a feedback loop where people's gait synchronising caused the bridge to wobble, and that wobble would cause people to step in time and repeat.\hfill
+    
+    The researches then then used simulations and theoretical values to work out how many people were needed on the bridge to cause the effect. This was then used to create a model that made it clear what affect the people walking across it had, and able to assist engineers in the future with what factors would need to be accounted for to prevent these issues.\hfill
+    
+    \subsection{More detailed info and models used}
+    
+    People walking across the bridge caused it to act like a weakly damped and driven oscillator. Ideas used in synchrony in other fields, like firefly's, were used to model the phenomenon. The second order ODE used is:
+    
+    \begin{equation}
+        M\frac{d^2X}{dt^2}+B\frac{dX}{dt}+KX=G\sum^N_{i=1}sin(\Theta_i)
+    \end{equation}
+    
+    Where $X(t)$ is the distance from rest, M is the modal mass (what is this?), B was the dampening factor, and K was the stiffness of the oscillator. The point of this model, compared to others that had been used previously, was to account for the crowd being the driving force for the oscillation as this had not been addressed in previous papers.\hfill
+    
+    This driving force is the summation term on the right hand side of the equation. Each person on the bridge, i, was producing a lateral force that alternates between their left and right step. G is the maximum force produced and the phase $\Theta$ that goes from 0 to $2\pi$ for a full 'cycle'.
+    \clearpage 
+    The force imparted by the pedestrians, caused the bridge to move and impart its own alterations to the pedestrians gait. This is given by a first order ODE:
+    
+    \begin{equation}
+        \frac{d\Theta_i}{dt}=\Omega_i+CAsin(\Psi-\Theta_i+\alpha)
+    \end{equation}
+    
+    The frequencies, $\Omega_i$ are randomly distributed with some probability density $P(\Omega)$ that represents the random walking patterns of the pedestrians across the bridge. $C$ quantifies the people's susceptibility to the bridges Amplitude $A(t)$ and Phase $\Psi(t)$.
+    
+
+\end{enumerate}
+
+\section*{Abstract}
+
+Abstract
+
+\section*{Introduction}
+
+Introduction
+
+\section*{Method}
+
+Method
+
+\section*{Results}
+
+Results
+
+\section*{Conclusion}
+
+Conclusion
+
+
+
+\end{document}
+
