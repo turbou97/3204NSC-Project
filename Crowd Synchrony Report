@@ -44,7 +44,7 @@
         M\frac{d^2X}{dt^2}+B\frac{dX}{dt}+KX=G\sum^N_{i=1}sin(\Theta_i)
     \end{equation}
     
-    Where $X(t)$ is the distance from rest, M is the modal mass (what is this?), B was the dampening factor, and K was the stiffness of the oscillator. The point of this model, compared to others that had been used previously, was to account for the crowd being the driving force for the oscillation as this had not been addressed in previous papers.\hfill
+    Where $X(t)$ is the distance from rest, M is the modal mass (\underline{what is this?}), B was the dampening factor, and K was the stiffness of the oscillator. The point of this model, compared to others that had been used previously, was to account for the crowd being the driving force for the oscillation as this had not been addressed in previous papers.\hfill
     
     This driving force is the summation term on the right hand side of the equation. Each person on the bridge, i, was producing a lateral force that alternates between their left and right step. G is the maximum force produced and the phase $\Theta$ that goes from 0 to $2\pi$ for a full 'cycle'.
     \clearpage 
@@ -54,10 +54,26 @@
         \frac{d\Theta_i}{dt}=\Omega_i+CAsin(\Psi-\Theta_i+\alpha)
     \end{equation}
     
-    The frequencies, $\Omega_i$ are randomly distributed with some probability density $P(\Omega)$ that represents the random walking patterns of the pedestrians across the bridge. $C$ quantifies the people's susceptibility to the bridges Amplitude $A(t)$ and Phase $\Psi(t)$.
+    The frequencies, $\Omega_i$ are randomly distributed with some probability density $P(\Omega_0)$ that represents the random walking patterns of the pedestrians across the bridge. $C$ quantifies the people's susceptibility to the bridges Amplitude $A(t)$ and Phase $\Psi(t)$.(where $X=Asin\Psi$ and $dX/dt=\Omega_0Acos\Psi$, and $\Omega_0=\sqrt{K/M}$ which is the resonant frequency of the bridge); and $\alpha$ is a phase lag frequency (\underline{find out what this means}) This equation is hypothetical, but consistent with other similar systems.\hfill
     
+    With simulations and experimentation it can be seen that the bridge has little if any movement until a critical mass (or in this case, pedestrian count), $N_c$ when it drastically increases and starts the feedback loop. $N_c$ can be calculated at the.
+    
+    \begin{equation}
+        N_c=\frac{4\varsigma}{\pi}(\frac{K}{GCP(\Omega_0)})
+    \end{equation}
+    
+    Where $\varsigma=B/\sqrt{4MK}$ is the dampening ratio (\underline{look more into this}). All but C is know for this, and using simulations and data gathered it was found that C was about 16/m/s (this is the quantity that measures susceptibility to the bridge movement). Figure two then shows the results from these parameters and explains a previously unexplained linear relationship with the excitation force from the pedestrians and the amplitude of the bridge.
 
+
+    \section{Relevant Diagrams}
+    \includegraphics[]{images/FigureofMill.BridgeasOsc..PNG}
+    Figure 1.
+    \clearpage
+    \includegraphics[]{images/Three-Graphs-for-Mill.-Bridge.PNG}
+    Figure 2.
 \end{enumerate}
+
+
 
 \section*{Abstract}
 
@@ -70,6 +86,65 @@ Introduction
 \section*{Method}
 
 Method
+
+Scaffolding a plan of attack
+
+\begin{enumerate}
+    \item Base ODE without (2) feedback on pedestrian gait:\hfill
+    
+    Solving for the Homogeneous ODE and Non-Dimensionalising by diving through by M gives:
+    \begin{equation}
+        \frac{d^2X}{dt^2}+\frac{B}{M}\frac{dX}{dt}+\frac{K}{M}X=\frac{G}{M}0 
+    \end{equation} leaving the $\frac{G}{M}$ so I can see what new constants are present\hfill
+    
+    The given solutions for $X(t)$ and $X'(t)$ are:\hfill
+    
+\begin{equation}
+    X(t)=Asin(\Psi)
+\end{equation}
+\begin{equation}
+    X'(t)=A\Omega_0cos(\Psi)
+\end{equation}
+$X(t)$ and $X'(t)$ can be found by solving the homogeneous solution via breaking it down into 2 systems of ODE
+    \item Breakdown (1) into system of first order ODEs:\hfill
+
+\begin{equation*}
+    X_1=X,X_2=X_1',X_2'=-\frac{B}{M}X_2-\frac{K}{M}X_1
+\end{equation*}
+Now that we have two, first order ODE's we can use MATLAB to find a solution for $X$ and $X'$, and use these to find the amplitude $A$ and phase $\Psi$
+
+\item Dividing (5) by (6) will likely be our simplest first choice and will give us:
+\begin{equation*}
+    \frac{X(t)}{X^{'}(t)}=\frac{Asin(\Psi)}{A\Omega_0cos(\Psi)}
+\end{equation*}
+The $A$ terms cancel, and the $sin$ and $cos$ becomes $tan$:
+\begin{equation*}
+        \frac{X(t)}{X^{'}(t)}=\frac{tan(\Psi)}{\Omega_0}
+\end{equation*}
+We can then rearrange for $\Psi$
+\begin{equation}
+       \Psi=arctan(\frac{\Omega_0X(t)}{X^{'}(t)})
+\end{equation}
+
+For the Amplitude we can multiply (5) by $\Omega_0$ square both equations, add them together and use trig identities to simplify:
+\begin{equation*}
+        \Omega_0^{2} X(t)^2+X^{'}(t)^2=\Omega_0 Asin(\Psi)^2+A\Omega_0cos(\Psi)^2
+\end{equation*}
+Factoring out A, and bringing $\Omega_0$ out the front as it will be constant for any single moment of time:
+\begin{equation*}
+        \Omega_0^{2} X(t)^2+X^{'}(t)^2=\Omega_0^{2} A^{2}(sin^2(\Psi)+cos^{2}(\Psi))
+\end{equation*}
+Our $sin^2(\Psi)+cos^{2}(\Psi)$ term is equal to 1 and we can rearrange for $A^{2}$:
+\begin{equation*}
+        A^{2}=\frac{\Omega_0^{2}X(t)^2+X^{'}(t)^2}{\Omega_0^{2}}
+\end{equation*}
+We can then take the square root and we will have our Amplitude:
+\begin{equation}
+        A=\sqrt{\frac{\Omega_0^{2}X(t)^2+X^{'}(t)^2}{\Omega_0^{2}}}
+\end{equation}
+\end{enumerate}
+
+
 
 \section*{Results}
 
