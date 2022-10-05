@@ -2,9 +2,9 @@
 function [] = bridgeOdehc()
 
 %Constants
-B=1; %Dampening factor [Ns/m]
-M=1000; %Mass of the bridge [kg]
-K=1; %Spring constant (stiffness) [N/m]
+B=1.5; %Dampening factor [Ns/m]
+M=10; %Mass of the bridge [kg]
+K=1.2; %Spring constant (stiffness) [N/m]
 G=1; %Driving force [N]
 
 %Getting randomly distributed foraces from pedestrians
@@ -14,12 +14,12 @@ F=random_forces();
     function du = f(t,u)
         du=zeros(2,1);
         du(1)=u(2);
-        du(2)=-(B/M)*u(2)-(K/M)*u(1)+((G/M)*sin(t*sum(F)));
+        du(2)=-(B/M)*u(2)-(K/M)*u(1)+(G/M)*sin(t)*sum(F);
     end
 
 %Initial conditions and time span
 u0=[0,0];
-tspan=[0 1000];
+tspan=[0 100];
 
 %ODE Solver
 [t,u] = ode45(@f,tspan,u0);
