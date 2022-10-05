@@ -1,0 +1,32 @@
+%Setting up the function for the Constant Driven ODE to be solved and plotted
+function [] = pedForce()
+
+%Constants
+O=1.2/10; %Omega - Frequencies 
+C=16; %Pedestrians susceptibility to the bridge
+A=0.1; %Amplitude
+p=2.216; %Phase
+a=1; %Phase lag frequency
+
+%Setting up the Comstantly Driven ODE
+    function du = f(t,u)
+        du=zeros(1,1);
+        du(1)=O+C*A*sin(p-u(:,1)+a);
+    end
+
+%Initial conditions and time span
+u0=[0];
+tspan=[0 100];
+
+%ODE Solver
+[t,u] = ode45(@f,tspan,u0);
+
+%Plotting Solutions
+hist(u(:,1))
+title('Phase?')
+xlabel('time (s)')
+ylabel('Radians')
+legend('r')
+
+
+end
