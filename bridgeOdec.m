@@ -1,20 +1,24 @@
-%Setting up the function for the Homogeneous ODE to be solved and plotted
-function [] = bridgeOdeh()
+%Setting up the function for the Constant Driven ODE to be solved and plotted
+function [] = bridgeOdec()
 
 %Constants
-B=1.1; %Dampening factor [Ns/m]
+B=1.5; %Dampening factor [Ns/m]
 M=10; %Mass of the bridge [kg]
-K=2; %Spring constant (stiffness) [N/m]
+K=1.2; %Spring constant (stiffness) [N/m]
+G=1; %Driving force [N]
 
-%Setting up the Homogeneous ODE
+%Getting randomly distributed foraces from pedestrians
+F=random_forces();
+
+%Setting up the Comstantly Driven ODE
     function du = f(t,u)
         du=zeros(2,1);
         du(1)=u(2);
-        du(2)=-(B/M)*u(2)-(K/M)*u(1);
+        du(2)=-(B/M)*u(2)-(K/M)*u(1)+(G/M)*sum(F);
     end
 
 %Initial conditions and time span
-u0=[1,0];
+u0=[0,0];
 tspan=[0 100];
 
 %ODE Solver
