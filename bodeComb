@@ -3,15 +3,15 @@
 function [] = bodeCom ()
 
 %Constants
-B=1; %Dampening factor [Ns/m]
-M=10; %Mass of the bridge [kg]
-K=1; %Spring constant (stiffness) [N/m]
-G=1; %Driving force [N]
-C=16; %Pedestrians susceptibility to the bridge (given by paper, measured)
-a=1; %Phase lag frequency
-
+B=1837350; %Dampening factor [Ns/m] %critical=2*sqrt(KM)
+M=390000000; %Mass of the bridge [kg]
+K=160500000; %Spring constant (stiffness) [N/m]
+G=700; %Driving force [N]
+C=16; %Pedestrians susceptibility to the bridge (given by paper, measured, /m/s)
+a=pi/2; %Phase lag frequency (radians) %pi/2 gives the largest possible value of sin(...)
+N=202; % Number of people walking onto the bridge
 %Pre allocating X and X'
-u=zeros(102,1);
+u=zeros(N,1);
 du=zeros(size(u));
 
 %Setting up A and P
@@ -22,16 +22,16 @@ du=zeros(size(u));
         P=atan2((sqrt(K/M)*u(1)),u(2));
         A=sqrt(((K/M)*u(1)^2+u(2)^2)/(K/M));
         du(1)=u(2,1);
-        du(2)=-(B/M)*u(2,1)-(K/M)*u(1,1)+(G/M)*sum(u(3:end,1));
+        du(2)=-(B/M)*u(2,1)-(K/M)*u(1,1)+(G/M)*sum(sin(u(3:end,1)));
         du(3:end)=rand(size(du(3:end)))+(C*A)*sin(P-u(3:end)+a);
     end
 
 %Initial conditions and time span
-u0=zeros(102,1);
-tspan=[0 100];
+u0=zeros(N,1);
+tspan=[0 1500];
 
 %ODE Solver
-[t,u] = ode15s(@f,tspan,u0);
+[t,u] = ode45(@f,tspan,u0);
 %Solving for A and P
 
 
@@ -42,6 +42,7 @@ plot(t,u(:,1));
 title('Distance x from origin at time t')
 xlabel('time (s)')
 ylabel('Distance [m]')
+ylim([-0.07 0.07]);
 % subplot(222);plot(t,u(2))
 % title('Centering/Returning velocity at time t')
 % xlabel('time (s)')
